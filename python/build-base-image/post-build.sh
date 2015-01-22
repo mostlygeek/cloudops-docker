@@ -28,7 +28,8 @@ touch "$TARGET_DIR/sbin/init"
 # to add those libraries to the container
 cd "$TARGET_DIR/lib"
 if [ ! -e libpthread.so.0 ]; then 
-    ln -s "libpthread-2.19.so" "libpthread.so.0"
+    LIB_PTHREAD=$(find . -type f -name "libpthread*" -exec basename '{}' \;)
+    ln -s "$LIB_PTHREAD" "libpthread.so.0"
 fi
 
 # ******************************************
@@ -36,6 +37,7 @@ fi
 # ******************************************
 cd "$TARGET_DIR/usr/lib"
 if [ ! -e libbz2.so.1 ]; then 
-    ln -s "libbz2.so.1.0.6" "libbz2.so.1"
+    LIB_BZ2=$(find . -type f -name "libbz2.so*" -exec basename '{}' \;)
+    ln -s "$LIB_BZ2" "libbz2.so.1"
 fi
 
