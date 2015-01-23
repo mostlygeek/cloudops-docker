@@ -1,0 +1,21 @@
+# use ubuntu:14.04 since it has the same glibc (2.19) for x86_64
+FROM ubuntu:14.04
+MAINTAINER Benson Wong <@mostlygeek>
+
+ENV PYTHON_VER 2.6
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# we don't really care how big the build box is...
+# just get the box setup with pyrun+pip+setuptools in /app
+RUN apt-get update &&  \
+    apt-get -y install curl wget sqlite3 build-essential git subversion \
+        python python-pip python-virtualenv python-dev && \
+    mkdir /app && \
+    cd /tmp && \
+    curl -Ok https://downloads.egenix.com/python/install-pyrun && \
+    chmod +x install-pyrun && \
+    ./install-pyrun --python=${PYTHON_VER} --platform=linux-x86_64 --disable-certificate-checks /app && \
+    rm /app/bin/pyrun*-debug
+
+ENV DEBIAN_FRONTEND dialog
